@@ -11,20 +11,20 @@ namespace Mcts
         bool compareTwoNodesWithUcb(Node &node1, Node &node2)
         {
             unsigned long int node1key = (unsigned long int)(
-                    node1.getWins() / node1.getVisits() +
-                    std::sqrt(2 * std::log(node2.getVisits() / node1.getVisits()))
+                    node1._wins / node1._visits +
+                    std::sqrt(2 * std::log(node2._visits / node1._visits))
             );
             unsigned long int node2key = (unsigned long int)(
-                    node2.getVisits() / node2.getVisits() +
-                    std::sqrt(2 * std::log(node1.getVisits() / node2.getVisits()))
+                    node2._wins / node2._visits +
+                    std::sqrt(2 * std::log(node1._visits / node2._visits))
             );
 
             return (node1key < node2key);
         }
 
-        bool compareNodesByVisists(Mcts::Tree::Node &node1, Mcts::Tree::Node &node2)
+        bool compareNodesByVisists(Node &node1, Node &node2)
         {
-            return (node1.getVisits() < node2.getVisits());
+            return (node1._visits < node2._visits);
         }
 
         Node::Node(std::string action, Node *parent, GameStates::IGameState *state)

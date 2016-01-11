@@ -34,11 +34,11 @@ namespace Mcts
 
             void update(long int value);
             unsigned long int _visits;
+            long int _wins;
         private:
             Node*_parentNode;
             std::string _previousAction;
             unsigned short int _lastActivePlayer;
-            long int _wins;
         };
 
         bool compareTwoNodesWithUcb(Mcts::Tree::Node &node1, Mcts::Tree::Node &node2);
