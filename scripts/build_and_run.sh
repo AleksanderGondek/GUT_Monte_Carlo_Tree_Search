@@ -45,7 +45,7 @@ if [ ${environment} = "gut" ]; then
     fi
 
     echo "Coping needed libs to mic machine.."
-    scp /opt/intel/composer_xe_2013_sp1.3.174/compiler/lib/mic/libmiomp5.so ${DESTINATION_XEON_PHI}:~
+    scp /opt/intel/composer_xe_2013_sp1.3.174/compiler/lib/mic/libiomp5.so mic0:~
     if [ $? -ne 0 ]; then
         echo "There was an error in coping needed libs to mic machine"
         exit 1
