@@ -56,7 +56,7 @@ fi
 
 if [ ${environment} = "gut" ]; then
     echo "Enabling icc and mpicc compilers.."
-    /opt/intel/composer_xe_2013_sp1.3.174/bin/compilervars.sh intel64
+    source /opt/intel/composer_xe_2013_sp1.3.174/bin/compilervars.sh intel64
 
     echo "Running command \'cmake -D CMAKE_C_COMPILER=icc -D CMAKE_CXX_COMPILER=mpiicc ./\'.."
     cmake -D CMAKE_C_COMPILER=icc -D CMAKE_CXX_COMPILER=mpiicc ./
