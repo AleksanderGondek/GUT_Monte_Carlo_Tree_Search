@@ -20,5 +20,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 
-set(SOURCE_FILES source/main.cpp)
+set(SOURCE_FILES
+        source/MctsMain.cpp
+        source/MctsCommon.h source/parsers/ChessGameParser.cpp source/parsers/ChessGameParser.h source/utils/ChessGameRepresentations.cpp source/utils/ChessGameRepresentations.h)
 add_executable(GUT_Monte_Carlo_Tree_Search ${SOURCE_FILES})

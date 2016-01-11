@@ -67,6 +67,13 @@ if [ ${environment} = "gut" ]; then
         exit 1
     fi
 
+    echo "Coping example_input.txt to mic machine.."
+    scp example_input.txt ${DESTINATION_XEON_PHI}:~
+    if [ $? -ne 0 ]; then
+        echo "There was an error in coping example_input.txt to mic machine"
+        exit 1
+    fi
+
     echo "SSH to mic machine"
     ssh ${DESTINATION_XEON_PHI}
     if [ $? -ne 0 ]; then
