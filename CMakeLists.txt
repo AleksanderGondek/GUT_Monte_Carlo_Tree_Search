@@ -29,5 +29,7 @@ set(SOURCE_FILES
         source/utils/ChessGameRepresentations.h
         source/games/IGameState.h
         source/games/ChessGameState.cpp
-        source/games/ChessGameState.h)
+        source/games/ChessGameState.h
+        source/tree/Node.cpp
+        source/tree/Node.h)
 add_executable(GUT_Monte_Carlo_Tree_Search ${SOURCE_FILES})
