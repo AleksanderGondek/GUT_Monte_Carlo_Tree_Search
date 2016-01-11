@@ -2,13 +2,13 @@
 // Created by agondek on 11/01/16.
 //
 
-#include "WithUtcSort.h"
+#include "WithUctSort.h"
 
 namespace Mcts
 {
     namespace Playouts
     {
-        std::string getBestMoveUsingUtcSort(Mcts::GameStates::IGameState* rootState,
+        std::string getBestMoveUsingUctSort(Mcts::GameStates::IGameState* rootState,
                                             int maximumIterations)
         {
             int i = 0;

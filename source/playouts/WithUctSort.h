@@ -13,7 +13,7 @@ namespace Mcts
 {
     namespace Playouts
     {
-        std::string getBestMoveUsingUtcSort(Mcts::GameStates::IGameState* rootState,
+        std::string getBestMoveUsingUctSort(Mcts::GameStates::IGameState* rootState,
                                             int maximumIterations);
     }
 }
