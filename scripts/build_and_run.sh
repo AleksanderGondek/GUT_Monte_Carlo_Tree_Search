@@ -53,6 +53,7 @@ else
     echo "Environment set to gut"
     environment="gut"
 fi
+export GUT_MCTS_ENV=${environment}
 
 if [ ${environment} = "gut" ]; then
     echo "Enabling icc and mpicc compilers.."
