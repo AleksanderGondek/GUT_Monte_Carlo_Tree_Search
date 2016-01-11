@@ -53,3 +53,16 @@ else
     echo "Environment set to gut"
     environment="gut"
 fi
+
+if [ ${environment} = "gut" ]; then
+    echo "Running command \'cmake ./\'.."
+    cmake ./
+
+    echo "Building application with \'make\' command.."
+    make
+
+    echo "Starting up.."
+    /bin/GUT_Monte_Carlo_Tree_Search
+else
+    echo "Not yet implemented."
+fi
