@@ -23,17 +23,33 @@ else
 fi
 
 if [ ${environment} = "gut" ]; then
-    echo "Enabling icc and mpicc compilers.."
+    echo "Enabling icc compiler.."
     source /opt/intel/composer_xe_2013_sp1.3.174/bin/compilervars.sh intel64
+    if [ $? -ne 0 ]; then
+        echo "There was an error in enabling icc compiler"
+        exit 1
+    fi
 
     echo "Running command \'cmake -D CMAKE_C_COMPILER=icc -D CMAKE_CXX_COMPILER=icc ./\'.."
     cmake -D CMAKE_C_COMPILER=icc -D CMAKE_CXX_COMPILER=icc -DGUT_MCTS_ENV=${environment} ./
+    if [ $? -ne 0 ]; then
+        echo "There was an error in running cmake command"
+        exit 1
+    fi
 
     echo "Building application with \'make\' command.."
     make
+    if [ $? -ne 0 ]; then
+        echo "There was an error in building application with make command"
+        exit 1
+    fi
 
     echo "Starting up.."
     ./bin/GUT_Monte_Carlo_Tree_Search
+    if [ $? -ne 0 ]; then
+        echo "GUT_Monte_Carlo_Tree_Search exited with non-zero status"
+        exit 1
+    fi
 else
     echo "Not yet implemented."
 fi
