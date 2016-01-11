@@ -9,3 +9,6 @@ This project is an attempt to understand, implement, parallelize Monte Carlo Tre
 
 ![alt tag](https://raw.github.com/AleksanderGondek/GUT_Monte_Carlo_Tree_Search/master/assets/SchemeOfMCTS.png)
 
+### Sources
+
+* Image previewing scheme of basic Monte-Carlo Tree Search Algorithm was borrowed from the following paper: Parallel Monte-Carlo Tree Search by Guillaume M.J-B. Chaslot, Mark H.M. Winands, and H. Jaap van den Herik
