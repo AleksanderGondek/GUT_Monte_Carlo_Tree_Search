@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-DESTINATION_XEON_PHI="mic0"
-
 echo "~~~ GUT Monte-Carlo Tree Search Project ~~~"
 echo "Build and run script starting up.."
 
@@ -54,14 +52,14 @@ if [ ${environment} = "gut" ]; then
     fi
 
     echo "Coping compiled application to mic machine.."
-    scp .bin/GUT_Monte_Carlo_Tree_Search ${DESTINATION_XEON_PHI}:~
+    scp .bin/GUT_Monte_Carlo_Tree_Search mic0:~
     if [ $? -ne 0 ]; then
         echo "There was an error in coping compiled application to mic machine"
         exit 1
     fi
 
     echo "SSH to mic machine"
-    ssh ${DESTINATION_XEON_PHI}
+    ssh mic0
     if [ $? -ne 0 ]; then
         echo "There was an error in SSHing to mic machine"
         exit 1
