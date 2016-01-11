@@ -3,7 +3,7 @@
 DESTINATION_XEON_PHI="mic0"
 
 echo "~~~ GUT Monte-Carlo Tree Search Project ~~~"
-echo "Build and run script starting up.."
+echo "Build and copy script starting up.."
 
 echo "Making sure the script was run properly.."
 if [ ! -f "CMakeLists.txt" ]; then
@@ -60,24 +60,17 @@ if [ ${environment} = "gut" ]; then
         exit 1
     fi
 
+    echo "Coping setup and run script to mic machine.."
+    scp scripts/run_mcts.sh ${DESTINATION_XEON_PHI}:~
+    if [ $? -ne 0 ]; then
+        echo "There was an error in coping setup and run script to mic machine"
+        exit 1
+    fi
+
     echo "SSH to mic machine"
     ssh ${DESTINATION_XEON_PHI}
     if [ $? -ne 0 ]; then
         echo "There was an error in SSHing to mic machine"
-        exit 1
-    fi
-
-    echo "Exporting library path"
-    export LD_LIBRARY_PATH="~"
-    if [ $? -ne 0 ]; then
-        echo "There was an error in exporting library path"
-        exit 1
-    fi
-
-    echo "Starting up.."
-    ~/GUT_Monte_Carlo_Tree_Search
-    if [ $? -ne 0 ]; then
-        echo "GUT_Monte_Carlo_Tree_Search exited with non-zero status"
         exit 1
     fi
 else
