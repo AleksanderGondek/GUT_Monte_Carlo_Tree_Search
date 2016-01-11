@@ -31,5 +31,7 @@ set(SOURCE_FILES
         source/games/ChessGameState.cpp
         source/games/ChessGameState.h
         source/tree/Node.cpp
-        source/tree/Node.h)
+        source/tree/Node.h
+        source/playouts/WithUtcSort.cpp
+        source/playouts/WithUtcSort.h)
 add_executable(GUT_Monte_Carlo_Tree_Search ${SOURCE_FILES})
