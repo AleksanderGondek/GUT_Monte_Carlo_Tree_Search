@@ -8,7 +8,7 @@ namespace Mcts
 {
     namespace Tree
     {
-        bool compareTwoNodesWithUcb(Node &node1, Node &node2)
+        bool compareTwoNodesWithUcb(const Node &node1, const Node &node2)
         {
             unsigned long int node1key = (unsigned long int)(
                     node1._wins / node1._visits +
@@ -22,7 +22,7 @@ namespace Mcts
             return (node1key < node2key);
         }
 
-        bool compareNodesByVisists(Node &node1, Node &node2)
+        bool compareNodesByVisists(const Node &node1, const Node &node2)
         {
             return (node1._visits < node2._visits);
         }

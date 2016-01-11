@@ -41,8 +41,8 @@ namespace Mcts
             unsigned short int _lastActivePlayer;
         };
 
-        bool compareTwoNodesWithUcb(Mcts::Tree::Node &node1, Mcts::Tree::Node &node2);
-        bool compareNodesByVisists(Mcts::Tree::Node &node1, Mcts::Tree::Node &node2);
+        bool compareTwoNodesWithUcb(const Mcts::Tree::Node &node1, const Mcts::Tree::Node &node2);
+        bool compareNodesByVisists(const Mcts::Tree::Node &node1, const Mcts::Tree::Node &node2);
     }
 }
 
