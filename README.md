@@ -1,2 +1,6 @@
-# GUT_Monte_Carlo_Tree_Search
-Project for Gdansk University of Technology "Manycore Architectures" classes - simply parallalized Monte Carlo Tree Search to be used in branching games decisions making 
+###### Gdansk University of Technology: Manycore Architectures Project
+
+Parallel Monte Carlo Tree Search using Xeon Phi device
+======
+
+This project is an attempt to understand, impement, parallelize Monte Carlo Tree Search algorithm and investigate it's performance on _Intel Xeon Phi_ device. Whole exercise is done for Manycore Architectures classes at Gdansk Univeisty of Technology.
