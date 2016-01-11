@@ -62,7 +62,7 @@ if [ ${environment} = "gut" ]; then
     make
 
     echo "Starting up.."
-    /bin/GUT_Monte_Carlo_Tree_Search
+    ./bin/GUT_Monte_Carlo_Tree_Search
 else
     echo "Not yet implemented."
 fi
