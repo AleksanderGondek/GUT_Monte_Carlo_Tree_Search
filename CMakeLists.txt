@@ -3,8 +3,9 @@ project(GUT_Monte_Carlo_Tree_Search)
 
 # OpenMP Releated
 FIND_PACKAGE(OpenMP REQUIRED)
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+SET(GUT_MCTS_ENV "dev" CACHE STRING "Defines which env we are building in")
 message(STATUS "Variable GUT_MCTS_ENV equals to: ${GUT_MCTS_ENV}")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
 if("${GUT_MCTS_ENV}" STREQUAL "dev")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x ${OpenMP_CXX_FLAGS}")
 elseif("${GUT_MCTS_ENV}" STREQUAL "gut")

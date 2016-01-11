@@ -53,14 +53,13 @@ else
     echo "Environment set to gut"
     environment="gut"
 fi
-export GUT_MCTS_ENV=${environment}
 
 if [ ${environment} = "gut" ]; then
     echo "Enabling icc and mpicc compilers.."
     source /opt/intel/composer_xe_2013_sp1.3.174/bin/compilervars.sh intel64
 
-    echo "Running command \'cmake -D CMAKE_C_COMPILER=icc -D CMAKE_CXX_COMPILER=mpiicc ./\'.."
-    cmake -D CMAKE_C_COMPILER=icc -D CMAKE_CXX_COMPILER=icc ./
+    echo "Running command \'cmake -D CMAKE_C_COMPILER=icc -D CMAKE_CXX_COMPILER=icc ./\'.."
+    cmake -D CMAKE_C_COMPILER=icc -D CMAKE_CXX_COMPILER=icc -DGUT_MCTS_ENV=${environment} ./
 
     echo "Building application with \'make\' command.."
     make
