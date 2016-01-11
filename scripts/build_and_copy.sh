@@ -74,7 +74,13 @@ if [ ${environment} = "gut" ]; then
         exit 1
     fi
 else
-    echo "Not yet implemented."
+    echo "Running in dev env.."
+    echo "Coping files to apl12 machine.."
+    sshpass -p "student" scp -r ./ student01@153.19.50.44:/home/student01/131508/GUT_Monte_Carlo_Tree_Search_SCP/
+    if [ $? -ne 0 ]; then
+        echo "There was an error in coping project to apl12 machine"
+        exit 1
+    fi
 fi
 
 exit 0
