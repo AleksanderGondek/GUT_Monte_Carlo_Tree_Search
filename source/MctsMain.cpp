@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
 //        }
 //    }
     std::unordered_map<std::string, std::string> test =
-            Mcts::Parsers::ChessGame::LoadChessBoard("home/student01/example_input.txt");
+            Mcts::Parsers::ChessGame::LoadChessBoard("/home/student01/example_input.txt");
     Mcts::Utils::ChessBoardRepresentations::PrintOutChessBoard(test);
 
     return 0;
