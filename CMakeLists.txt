@@ -26,5 +26,8 @@ set(SOURCE_FILES
         source/parsers/ChessGameParser.cpp
         source/parsers/ChessGameParser.h
         source/utils/ChessGameRepresentations.cpp
-        source/utils/ChessGameRepresentations.h)
+        source/utils/ChessGameRepresentations.h
+        source/games/IGameState.h
+        source/games/ChessGameState.cpp
+        source/games/ChessGameState.h)
 add_executable(GUT_Monte_Carlo_Tree_Search ${SOURCE_FILES})
