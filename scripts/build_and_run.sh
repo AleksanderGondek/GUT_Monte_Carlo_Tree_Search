@@ -55,8 +55,8 @@ else
 fi
 
 if [ ${environment} = "gut" ]; then
-    echo "Running command \'cmake ./\'.."
-    cmake ./
+    echo "Running command \'cmake -D CMAKE_C_COMPILER=icc -D CMAKE_CXX_COMPILER=mpiicc ./\'.."
+    cmake -D CMAKE_C_COMPILER=icc -D CMAKE_CXX_COMPILER=mpiicc ./
 
     echo "Building application with \'make\' command.."
     make
