@@ -2,6 +2,14 @@
 bin/
 lib/
 
+# ~~~ CMake Section ~~~
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Makefile
+cmake_install.cmake
+install_manifest.txt
+
 # ~~~ Clion Section ~~~
 
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
