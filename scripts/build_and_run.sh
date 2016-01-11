@@ -59,7 +59,7 @@ if [ ${environment} = "gut" ]; then
     source /opt/intel/composer_xe_2013_sp1.3.174/bin/compilervars.sh intel64
 
     echo "Running command \'cmake -D CMAKE_C_COMPILER=icc -D CMAKE_CXX_COMPILER=mpiicc ./\'.."
-    cmake -D CMAKE_C_COMPILER=icc -D CMAKE_CXX_COMPILER=mpiicc ./
+    cmake -D CMAKE_C_COMPILER=icc -D CMAKE_CXX_COMPILER=icc ./
 
     echo "Building application with \'make\' command.."
     make
