@@ -35,5 +35,5 @@ set(SOURCE_FILES
         source/playouts/WithUctSort.cpp
         source/playouts/WithUctSort.h
         source/playouts/WithUctSortRootParallelization.cpp
-        source/playouts/WithUctSortRootParallelization.h)
+        source/playouts/WithUctSortRootParallelization.h source/utils/OmpHelpers.cpp source/utils/OmpHelpers.h)
 add_executable(GUT_Monte_Carlo_Tree_Search ${SOURCE_FILES})

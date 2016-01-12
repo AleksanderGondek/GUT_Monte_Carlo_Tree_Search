@@ -13,17 +13,21 @@ namespace Mcts
         {
             std::vector<std::string> allActionsChosen;
 
-            #pragma omp parallel num_threads(4) shared(allActionsChosen)
+            #pragma omp parallel num_threads(4)
             {
+                Mcts::Utils::OmpHelpers::Message("Pragma Omp Parallel section started..");
                 int i = 0;
                 Mcts::Tree::Node root(MCTS_ACTION_NOT_AVAILABLE, NULL, rootState);
 
+                Mcts::Utils::OmpHelpers::Message("Entering while loop..");
                 while (i < maximumIterations)
                 {
+                    Mcts::Utils::OmpHelpers::Message("Cloning rootState..");
                     Mcts::Tree::Node *node = &root;
                     Mcts::GameStates::IGameState *state = rootState->clone();
 
                     // Selection Step
+                    Mcts::Utils::OmpHelpers::Message("Starting selection step..");
                     while (node->actionsNotTaken.empty() && !node->childNodes.empty())
                     {
                         node = node->selectNextChildNode();
@@ -31,6 +35,7 @@ namespace Mcts
                     }
 
                     // Expansion Step
+                    Mcts::Utils::OmpHelpers::Message("Starting expansion step..");
                     if (!node->actionsNotTaken.empty())
                     {
                         srand((unsigned int) time(0));
@@ -41,6 +46,7 @@ namespace Mcts
                     }
 
                     // Simulation Step
+                    Mcts::Utils::OmpHelpers::Message("Starting simulation step..");
                     while (!state->getAvailableActions().empty())
                     {
                         std::vector<std::string> actions = state->getAvailableActions();
@@ -50,6 +56,7 @@ namespace Mcts
                     }
 
                     // Backpropagation Step
+                    Mcts::Utils::OmpHelpers::Message("Starting backpropagation step..");
                     while (node->getParentNode() != NULL)
                     {
                         node->update(state->getStateValue(node->getLastActivePlayer()));
@@ -57,13 +64,17 @@ namespace Mcts
                     }
 
                     i++;
+                    Mcts::Utils::OmpHelpers::Message("Exiting while loop..");
                 }
 
+                Mcts::Utils::OmpHelpers::Message("Sorting possible moves..");
                 std::sort(root.childNodes.begin(), root.childNodes.end(),
                           Mcts::Tree::compareNodesByVisists);
                 Mcts::Tree::Node lastItemWithHighestVisits = root.childNodes.back();
                 std::string action = lastItemWithHighestVisits.getPreviousAction();
+                Mcts::Utils::OmpHelpers::Message("Saving most valuable action in shared vector..");
                 allActionsChosen.push_back(action);
+                Mcts::Utils::OmpHelpers::Message("Pragma Omp Parallel section ended..");
             }
 
             // Sort before getting most frequent element

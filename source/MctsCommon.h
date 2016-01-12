@@ -13,11 +13,14 @@
 #include <iostream>
 #include <fstream>
 #include <limits>
+#include <omp.h>
 #include <sstream>
 #include <unordered_map>
 #include <vector>
 
 // Constants definitions
+#define MCTS__OMP_VERBOSE_MODE true
+
 // Players ids
 #define MCTS_PLAYER_ONE_ID 1
 #define MCTS_PLAYER_TWO_ID 2

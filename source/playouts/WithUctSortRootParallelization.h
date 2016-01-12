@@ -8,6 +8,7 @@
 #include "../MctsCommon.h"
 #include "../games/IGameState.h"
 #include "../tree/Node.h"
+#include "../utils/OmpHelpers.h"
 
 namespace Mcts
 {
