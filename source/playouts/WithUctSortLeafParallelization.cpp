@@ -37,29 +37,21 @@ namespace Mcts
                 }
 
                 // Simulation Step
-                #pragma omp parallel private(MCTS_SIMULATION_MAX_ITERATIONS) shared(state)
+                int simulationStepIterations = 0;
+                while(!state->getAvailableActions().empty())
                 {
-                    bool shouldStopSimulationStep = false;
-                    int simulationStepIterations = 0;
-                    while(!shouldStopSimulationStep)
+                    std::vector<std::string> actions = state->getAvailableActions();
+                    std::random_shuffle(actions.begin(), actions.end());
+                    std::string action = actions.back();
+                    state->performAction(action);
+
+                    simulationStepIterations++;
+                    if(simulationStepIterations >= MCTS_SIMULATION_MAX_ITERATIONS)
                     {
-                        #pragma omp critical
-                        {
-                            std::vector<std::string> actions = state->getAvailableActions();
-                            std::random_shuffle(actions.begin(), actions.end());
-                            std::string action = actions.back();
-                            state->performAction(action);
-                        }
-
-                        simulationStepIterations++;
-                        if(simulationStepIterations >= MCTS_SIMULATION_MAX_ITERATIONS)
-                        {
-                            break;
-                        }
-
-                        shouldStopSimulationStep = !state->getAvailableActions().empty();
+                        break;
                     }
                 }
+
                 // Backpropagation Step
                 while(node->getParentNode() != NULL)
                 {
