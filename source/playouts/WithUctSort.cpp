@@ -37,12 +37,19 @@ namespace Mcts
                 }
 
                 // Simulation Step
+                int simulationStepIterations = 0;
                 while(!state->getAvailableActions().empty())
                 {
                     std::vector<std::string> actions = state->getAvailableActions();
                     std::random_shuffle(actions.begin(), actions.end());
                     std::string action = actions.back();
                     state->performAction(action);
+
+                    simulationStepIterations++;
+                    if(simulationStepIterations >= MCTS_SIMULATION_MAX_ITERATIONS)
+                    {
+                        break;
+                    }
                 }
 
                 // Backpropagation Step

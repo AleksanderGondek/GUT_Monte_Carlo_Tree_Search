@@ -11,7 +11,7 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "Starting up.."
-~/GUT_Monte_Carlo_Tree_Search
+~/GUT_Monte_Carlo_Tree_Search 8 200 /home/student01/example_input.txt
 if [ $? -ne 0 ]; then
     echo "GUT_Monte_Carlo_Tree_Search exited with non-zero status"
     exit 1

@@ -2,34 +2,44 @@
 #include "games/ChessGameState.h"
 #include "playouts/WithUctSort.h"
 #include "playouts/WithUctSortRootParallelization.h"
-
-// Tmp includes for sake of testing
 #include "parsers/ChessGameParser.h"
-#include "utils/ChessGameRepresentations.h"
+
+// Algorithm tuning
+int MCTS_SIMULATION_MAX_ITERATIONS = 200;
 
 int main(int argc, char* argv[])
 {
-// Exemplary code of OMP
-//    char const* str = "Hello world";
-//    unsigned const len = std::strlen(str);
-//#pragma omp parallel for num_threads(4)
-//    for (unsigned thread = 0; thread < 4; ++thread)
-//    {
-//        for (unsigned i = 0; i < len; ++i)
-//        {
-//            std::cout << str[i] << std::endl;
-//        }
-//    }
+    // Parse arguments
+    if(argc < 4)
+    {
+        // We expect 4 arguments: program name,
+        // quantity of omp_threads that should be usd,
+        // number of maximum simulations allowed for one step,
+        // and full path to file with chess starting board.
+        std::cerr <<
+                "Usage: " <<
+                argv[0] <<
+                "{OMP_THREADS_TO_USE}" <<
+                "{MAX_SIMULATION_ITERATIONS}" <<
+                "{FULL_PATH_TO_FILE_WITH_STARTING_BOARD}" <<
+                std::endl;
+        return 1;
+    }
+
+    // Set variables from arguments
+    // Omp related
+    omp_set_dynamic(0);                         // Explicitly disable dynamic teams
+    omp_set_num_threads(std::stoi(argv[1]));    // Use given quantity of threads for
+                                                // all consecutive parallel regions
+
+    // Mcts related
+    MCTS_SIMULATION_MAX_ITERATIONS = std::stoi(argv[2]); // Set maximum number of iterations
+                                                         // for simulation step.
     std::unordered_map<std::string, std::string> test =
-            Mcts::Parsers::ChessGame::LoadChessBoard("/home/student01/example_input.txt");
+            Mcts::Parsers::ChessGame::LoadChessBoard(argv[3]); // Load default board
+
     Mcts::Utils::ChessBoardRepresentations::PrintOutChessBoard(test);
     Mcts::GameStates::ChessGameState gameState(2, test);
-
-    // IMPORTANT!: if number of _chips mod (k + 1) == 0, second player should win (optimal)
-    // Where k is the maximum number of _chips allowed to draw at once
-    // Uncomment to present a valid game
-    // Mcts::GameStates::NimGameState gameState(2,400);
-    // Mcts::GameStates::NimGameState gameState(MCTS_PLAYER_TWO_ID, 400);
 
     while (!gameState.getAvailableActions().empty())
     {

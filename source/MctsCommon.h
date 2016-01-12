@@ -22,9 +22,6 @@
 // Debugging
 #define MCTS__OMP_VERBOSE_MODE false
 
-// Algorithm tuning
-#define MCTS_SIMULATION_MAX_ITERATIONS 200
-
 // Players ids
 #define MCTS_PLAYER_ONE_ID 1
 #define MCTS_PLAYER_TWO_ID 2
@@ -41,5 +38,8 @@
 #define MCTS_CHESS_GAME_PIECE_QUEEN "Q"
 #define MCTS_CHESS_GAME_PIECE_KING "K"
 #define MCTS_CHESS_GAME_PIECE_UNKNOWN "X"
+
+// Algorithm tuning
+extern int MCTS_SIMULATION_MAX_ITERATIONS;
 
 #endif //GUT_MONTE_CARLO_TREE_SEARCH_MCTSCOMMON_H
