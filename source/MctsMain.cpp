@@ -1,6 +1,7 @@
 #include "MctsCommon.h"
 #include "games/ChessGameState.h"
 #include "playouts/WithUctSort.h"
+#include "playouts/WithUctSortRootParallelization.h"
 
 // Tmp includes for sake of testing
 #include "parsers/ChessGameParser.h"
@@ -30,7 +31,6 @@ int main(int argc, char* argv[])
     // Mcts::GameStates::NimGameState gameState(2,400);
     // Mcts::GameStates::NimGameState gameState(MCTS_PLAYER_TWO_ID, 400);
 
-    bool finished = false;
     while (!gameState.getAvailableActions().empty())
     {
         std::cout << "Board before taking move:" << std::endl;
@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
         else
         {
             // Last player was no 2 so it's player 1 turn
-            action = Mcts::Playouts::getBestMoveUsingUctSort(&gameState, 20);
+            action = Mcts::Playouts::getBestMoveUsingUctSortRootParallelization(&gameState, 20);
         }
 
         std::cout << "Player: " << 3 - gameState.getLastActivePlayer() << " takes his best move: " << action <<
