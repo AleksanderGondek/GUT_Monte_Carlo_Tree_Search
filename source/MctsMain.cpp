@@ -40,12 +40,12 @@ int main(int argc, char* argv[])
         if (gameState.getLastActivePlayer() == MCTS_PLAYER_ONE_ID)
         {
             // Last player was no 1, so it's player 2 turn
-            action = Mcts::Playouts::getBestMoveUsingUctSort(&gameState, 20);
+            action = Mcts::Playouts::getBestMoveUsingUctSort(&gameState, 40);
         }
         else
         {
             // Last player was no 2 so it's player 1 turn
-            action = Mcts::Playouts::getBestMoveUsingUctSortRootParallelization(&gameState, 20);
+            action = Mcts::Playouts::getBestMoveUsingUctSortRootParallelization(&gameState, 40);
         }
 
         std::cout << "Player: " << 3 - gameState.getLastActivePlayer() << " takes his best move: " << action <<

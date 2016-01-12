@@ -19,7 +19,11 @@
 #include <vector>
 
 // Constants definitions
-#define MCTS__OMP_VERBOSE_MODE true
+// Debugging
+#define MCTS__OMP_VERBOSE_MODE false
+
+// Algorithm tuning
+#define MCTS_SIMULATION_MAX_ITERATIONS 200
 
 // Players ids
 #define MCTS_PLAYER_ONE_ID 1

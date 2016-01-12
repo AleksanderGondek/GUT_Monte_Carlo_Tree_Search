@@ -13,7 +13,7 @@ namespace Mcts
         {
             std::vector<std::string> allActionsChosen;
 
-            #pragma omp parallel num_threads(4)
+            #pragma omp parallel num_threads(8)
             {
                 Mcts::Utils::OmpHelpers::Message("Pragma Omp Parallel section started..");
                 int i = 0;
@@ -47,12 +47,19 @@ namespace Mcts
 
                     // Simulation Step
                     Mcts::Utils::OmpHelpers::Message("Starting simulation step..");
+                    int simulationStepIterations = 0;
                     while (!state->getAvailableActions().empty())
                     {
                         std::vector<std::string> actions = state->getAvailableActions();
                         std::random_shuffle(actions.begin(), actions.end());
                         std::string action = actions.back();
                         state->performAction(action);
+
+                        simulationStepIterations++;
+                        if(simulationStepIterations >= MCTS_SIMULATION_MAX_ITERATIONS)
+                        {
+                            break;
+                        }
                     }
 
                     // Backpropagation Step
