@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-DESTINATION_XEON_PHI="mic0"
-
 echo "~~~ GUT Monte-Carlo Tree Search Project ~~~"
 echo "Build and copy script starting up.."
 
@@ -10,6 +8,16 @@ if [ ! -f "CMakeLists.txt" ]; then
     echo "Build & Run script was not run from project root directory!"
     echo "Please do run it from root."
     exit 1
+fi
+if [ $# -ne 1 ]; then
+    echo "You have run this script with invalid parameters (or lack of them)"
+    echo "Valid usage: build_and_copy.sh {NAME OF XEON PHI DEVICE TO USE}"
+    echo "i.e. ./build_and_copy.sh mic0"
+    echo "Setting xeon_phi_device name to default (mic0)"
+    DESTINATION_XEON_PHI="mic0"
+else
+    echo "Setting xeon_phi_device name to ($1)"
+    DESTINATION_XEON_PHI=$1
 fi
 
 ./scripts/clean_up.sh
