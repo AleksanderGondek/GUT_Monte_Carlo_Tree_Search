@@ -37,8 +37,7 @@ namespace Mcts
                 }
 
                 // Simulation Step
-                #pragma omp parallel private(MCTS_SIMULATION_MAX_ITERATIONS,shouldStopSimulationStep)\
- *              shared(state)
+                #pragma omp parallel private(MCTS_SIMULATION_MAX_ITERATIONS) shared(state)
                 {
                     bool shouldStopSimulationStep = false;
                     int simulationStepIterations = 0;
