@@ -15,7 +15,7 @@ T.B.D
 
 ### Parallel implementation overview
 
-![alt tag](https://raw.github.com/AleksanderGondek/GUT_Monte_Carlo_Tree_Search/master/assets/SchemeOfParalellMCTS.png)
+![alt tag](https://raw.github.com/AleksanderGondek/GUT_Monte_Carlo_Tree_Search/master/assets/SchemeOfParallelMCTS.png)
 
 T.B.D
 
