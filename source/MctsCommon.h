@@ -20,7 +20,7 @@
 
 // Constants definitions
 // Debugging
-#define MCTS__OMP_VERBOSE_MODE false
+#define MCTS__OMP_VERBOSE_MODE true
 
 // Players ids
 #define MCTS_PLAYER_ONE_ID 1

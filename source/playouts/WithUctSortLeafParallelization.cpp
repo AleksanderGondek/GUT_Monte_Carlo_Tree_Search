@@ -26,40 +26,67 @@ namespace Mcts
                     state->performAction(node->getPreviousAction());
                 }
 
-                // Expansion Step
-                if(!node->actionsNotTaken.empty())
-                {
-                    srand((unsigned int) time(0));
-                    std::random_shuffle(node->actionsNotTaken.begin(), node->actionsNotTaken.end());
-                    std::string action = node->actionsNotTaken.back();
-                    state->performAction(action);
-                    node = node->addChildNode(action, state);
-                }
+                // Copy all possible actions to vector (not array cause it's not-stadard and
+                // causes compilation errors
+                // = sign is overloaded to copy contents of one vector into another
+                std::vector<std::string> actionsForThreads = node->actionsNotTaken;
 
-                // Simulation Step
-                int simulationStepIterations = 0;
-                while(!state->getAvailableActions().empty())
+                #pragma omp parallel \
+                shared(node,state) \
+                firstprivate(actionsForThreads,MCTS_SIMULATION_MAX_ITERATIONS)
                 {
-                    std::vector<std::string> actions = state->getAvailableActions();
-                    std::random_shuffle(actions.begin(), actions.end());
-                    std::string action = actions.back();
-                    state->performAction(action);
+                    int index;
+                    Mcts::Tree::Node* localNode;
+                    Mcts::GameStates::IGameState* localState;
 
-                    simulationStepIterations++;
-                    if(simulationStepIterations >= MCTS_SIMULATION_MAX_ITERATIONS)
+                    #pragma omp for
+                    for(index=0; index<actionsForThreads.size(); index++)
                     {
-                        break;
+                        #pragma omp critical
+                        {
+                            // Expansion step
+                            std::string expansionAction = actionsForThreads[index];
+                            state->performAction(expansionAction);
+                            localNode = node->addChildNode(expansionAction, state);
+                            localState = state->clone();
+
+                            // Simulation Step
+                            int simulationStepIterations = 0;
+                            while (!localState->getAvailableActions().empty())
+                            {
+                                std::vector<std::string> actions = localState->getAvailableActions();
+                                std::random_shuffle(actions.begin(), actions.end());
+                                std::string action = actions.back();
+                                localState->performAction(action);
+
+                                simulationStepIterations++;
+                                if (simulationStepIterations >= MCTS_SIMULATION_MAX_ITERATIONS)
+                                {
+                                    break;
+                                }
+                            }
+
+                            // Backpropagation Step
+                            while(localNode->getParentNode() != NULL)
+                            {
+                                std::string messageToDisplay = "localNode previousAction: ";
+                                messageToDisplay += localNode->getPreviousAction();
+                                messageToDisplay += " | localNode lastActivePlayer: ";
+                                messageToDisplay += std::to_string(localNode->getLastActivePlayer());
+                                messageToDisplay += " | localState value: ";
+                                messageToDisplay += std::to_string(localState->getStateValue(localNode->getLastActivePlayer()));
+
+                                Mcts::Utils::OmpHelpers::Message(messageToDisplay);
+
+                                localNode->update(localState->getStateValue(localNode->getLastActivePlayer()));
+                                localNode = localNode->getParentNode();
+                            }
+                        }
                     }
                 }
 
-                // Backpropagation Step
-                while(node->getParentNode() != NULL)
-                {
-                    node->update(state->getStateValue(node->getLastActivePlayer()));
-                    node = node->getParentNode();
-                }
-
                 i++;
+                std::cout << "End of iteration" << std::endl;
             }
 
             std::sort(root.childNodes.begin(), root.childNodes.end(),

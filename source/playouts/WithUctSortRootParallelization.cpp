@@ -13,7 +13,7 @@ namespace Mcts
         {
             std::vector<std::string> allActionsChosen;
 
-            #pragma omp parallel private(MCTS_SIMULATION_MAX_ITERATIONS)
+            #pragma omp parallel firstprivate(MCTS_SIMULATION_MAX_ITERATIONS)
             {
                 Mcts::Utils::OmpHelpers::Message("Pragma Omp Parallel section started..");
                 int i = 0;
