@@ -16,6 +16,7 @@ namespace Mcts
         {
         public:
             Node(std::string action, Node* parent, GameStates::IGameState* state);
+            Node* clone();
 
             std::vector<std::string> actionsNotTaken;
             std::vector<Node> childNodes;

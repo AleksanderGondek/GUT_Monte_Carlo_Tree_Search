@@ -19,11 +19,23 @@ namespace Mcts
                 Mcts::Tree::Node* node = &root;
                 Mcts::GameStates::IGameState* state = rootState->clone();
 
+                std::cout << "I have that many children: " << std::to_string(node->childNodes.size()) << std::endl;
+
                 // Selection Step
                 while(node->actionsNotTaken.empty() && !node->childNodes.empty())
                 {
+                    for(int kek = 0 ; kek <node->childNodes.size(); kek++)
+                    {
+                        std::cout << "Child of index: " << kek << std::endl;
+                        std::cout << node->childNodes[kek]._visits << std::endl;
+                        std::cout << node->childNodes[kek]._wins << std::endl;
+                    }
+
+                    std::cout << "test" << std::endl;
                     node = node->selectNextChildNode();
+                    std::cout << "test2" << std::endl;
                     state->performAction(node->getPreviousAction());
+                    std::cout << "test3" << std::endl;
                 }
 
                 // Copy all possible actions to vector (not array cause it's not-stadard and
@@ -32,6 +44,7 @@ namespace Mcts
                 std::vector<std::string> actionsForThreads = node->actionsNotTaken;
 
                 #pragma omp parallel \
+                default(none) \
                 shared(node,state) \
                 firstprivate(actionsForThreads,MCTS_SIMULATION_MAX_ITERATIONS)
                 {
@@ -39,19 +52,26 @@ namespace Mcts
                     Mcts::Tree::Node* localNode;
                     Mcts::GameStates::IGameState* localState;
 
+                    Mcts::Utils::OmpHelpers::Message("Pragma Omp Parallel section started..");
                     #pragma omp for
                     for(index=0; index<actionsForThreads.size(); index++)
                     {
                         #pragma omp critical
                         {
                             // Expansion step
+                            Mcts::Utils::OmpHelpers::Message("Pragma Omp For Expansion Step started..");
                             std::string expansionAction = actionsForThreads[index];
-                            state->performAction(expansionAction);
-                            localNode = node->addChildNode(expansionAction, state);
                             localState = state->clone();
+                            localState->performAction(expansionAction);
+                            localNode = node->addChildNode(expansionAction, localState);
+
+                            // Copy to local variables to not break shared mem
+                            Mcts::Utils::OmpHelpers::Message("Pragma Omp For Coping values started..");
+                            localNode = localNode->clone();
 
                             // Simulation Step
                             int simulationStepIterations = 0;
+                            Mcts::Utils::OmpHelpers::Message("Pragma Omp For Simulation Step started..");
                             while (!localState->getAvailableActions().empty())
                             {
                                 std::vector<std::string> actions = localState->getAvailableActions();
@@ -66,22 +86,34 @@ namespace Mcts
                                 }
                             }
 
-                            // Backpropagation Step
-                            while(localNode->getParentNode() != NULL)
+                            //Backpropagation step
+                            // Step 1. Find node child that has the same previousAction;
+                            Mcts::Utils::OmpHelpers::Message("Pragma Omp For Backpropagation Step started..");
+                            for(int j = 0; j<node->childNodes.size(); j++)
                             {
-                                std::string messageToDisplay = "localNode previousAction: ";
-                                messageToDisplay += localNode->getPreviousAction();
-                                messageToDisplay += " | localNode lastActivePlayer: ";
-                                messageToDisplay += std::to_string(localNode->getLastActivePlayer());
-                                messageToDisplay += " | localState value: ";
-                                messageToDisplay += std::to_string(localState->getStateValue(localNode->getLastActivePlayer()));
-
-                                Mcts::Utils::OmpHelpers::Message(messageToDisplay);
-
-                                localNode->update(localState->getStateValue(localNode->getLastActivePlayer()));
-                                localNode = localNode->getParentNode();
+                                Mcts::Tree::Node* browsingNode = &node->childNodes[j];
+                                Mcts::Utils::OmpHelpers::Message("Pragma Omp For Backpropagation check started..");
+                                if(browsingNode->getPreviousAction() ==
+                                   localNode->getPreviousAction())
+                                {
+                                    Mcts::Utils::OmpHelpers::Message("Pragma Omp For Backpropagation if hit!");
+                                    while(browsingNode->getParentNode() != NULL)
+                                    {
+                                        Mcts::Utils::OmpHelpers::Message("Pragma Omp For Backpropagation while..");
+                                        // Step 2. Update it with appropriate value
+                                        browsingNode->update(
+                                                localState->getStateValue(
+                                                        browsingNode->getLastActivePlayer()
+                                                )
+                                        );
+                                        browsingNode = browsingNode->getParentNode();
+                                    }
+                                    break;
+                                }
                             }
                         }
+
+                        Mcts::Utils::OmpHelpers::Message("Pragma Omp Parallel section finishing..");
                     }
                 }
 

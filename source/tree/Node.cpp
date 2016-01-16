@@ -47,6 +47,17 @@ namespace Mcts
             }
         }
 
+        Node* Node::clone()
+        {
+            Node* toBeReturned = new Node(this->_previousAction, NULL, NULL);
+            toBeReturned->_wins = this->_wins;
+            toBeReturned->_visits = this->_visits;
+
+            toBeReturned->actionsNotTaken = this->actionsNotTaken;
+            toBeReturned->setLastActivePlayer(this->_lastActivePlayer);
+            return toBeReturned;
+        }
+
         Node* Node::selectNextChildNode()
         {
             std::sort(this->childNodes.begin(), this->childNodes.end(), compareTwoNodesWithUcb);
