@@ -19,23 +19,11 @@ namespace Mcts
                 Mcts::Tree::Node* node = &root;
                 Mcts::GameStates::IGameState* state = rootState->clone();
 
-                //std::cout << "I have that many children: " << std::to_string(node->childNodes.size()) << std::endl;
-
                 // Selection Step
                 while(node->actionsNotTaken.empty() && !node->childNodes.empty())
                 {
-//                    for(int kek = 0 ; kek <node->childNodes.size(); kek++)
-//                    {
-//                        std::cout << "Child of index: " << kek << std::endl;
-//                        std::cout << node->childNodes[kek]._visits << std::endl;
-//                        std::cout << node->childNodes[kek]._wins << std::endl;
-//                    }
-
-                    //std::cout << "test" << std::endl;
                     node = node->selectNextChildNode();
-                    //std::cout << "test2" << std::endl;
                     state->performAction(node->getPreviousAction());
-                    //std::cout << "test3" << std::endl;
                 }
 
                 // Copy all possible actions to vector (not array cause it's not-stadard and
@@ -68,36 +56,39 @@ namespace Mcts
                             // Copy to local variables to not break shared mem
                             Mcts::Utils::OmpHelpers::Message("Pragma Omp For Coping values started..");
                             localNode = localNode->clone();
+                        }
 
-                            // Simulation Step
-                            int simulationStepIterations = 0;
-                            Mcts::Utils::OmpHelpers::Message("Pragma Omp For Simulation Step started..");
-                            while (!localState->getAvailableActions().empty())
+                        // Simulation Step
+                        int simulationStepIterations = 0;
+                        Mcts::Utils::OmpHelpers::Message("Pragma Omp For Simulation Step started..");
+                        while (!localState->getAvailableActions().empty())
+                        {
+                            std::vector<std::string> actions = localState->getAvailableActions();
+                            std::random_shuffle(actions.begin(), actions.end());
+                            std::string action = actions.back();
+                            localState->performAction(action);
+
+                            simulationStepIterations++;
+                            if (simulationStepIterations >= MCTS_SIMULATION_MAX_ITERATIONS)
                             {
-                                std::vector<std::string> actions = localState->getAvailableActions();
-                                std::random_shuffle(actions.begin(), actions.end());
-                                std::string action = actions.back();
-                                localState->performAction(action);
-
-                                simulationStepIterations++;
-                                if (simulationStepIterations >= MCTS_SIMULATION_MAX_ITERATIONS)
-                                {
-                                    break;
-                                }
+                                break;
                             }
+                        }
 
+                        #pragma omp critical
+                        {
                             //Backpropagation step
                             // Step 1. Find node child that has the same previousAction;
                             Mcts::Utils::OmpHelpers::Message("Pragma Omp For Backpropagation Step started..");
-                            for(int j = 0; j<node->childNodes.size(); j++)
+                            for (int j = 0; j < node->childNodes.size(); j++)
                             {
-                                Mcts::Tree::Node* browsingNode = &node->childNodes[j];
+                                Mcts::Tree::Node *browsingNode = &node->childNodes[j];
                                 Mcts::Utils::OmpHelpers::Message("Pragma Omp For Backpropagation check started..");
-                                if(browsingNode->getPreviousAction() ==
-                                   localNode->getPreviousAction())
+                                if (browsingNode->getPreviousAction() ==
+                                    localNode->getPreviousAction())
                                 {
                                     Mcts::Utils::OmpHelpers::Message("Pragma Omp For Backpropagation if hit!");
-                                    while(browsingNode->getParentNode() != NULL)
+                                    while (browsingNode->getParentNode() != NULL)
                                     {
                                         Mcts::Utils::OmpHelpers::Message("Pragma Omp For Backpropagation while..");
                                         // Step 2. Update it with appropriate value
@@ -118,7 +109,6 @@ namespace Mcts
                 }
 
                 i++;
-//                std::cout << "End of iteration" << std::endl;
             }
 
             std::sort(root.childNodes.begin(), root.childNodes.end(),

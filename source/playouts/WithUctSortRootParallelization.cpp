@@ -80,7 +80,12 @@ namespace Mcts
                 Mcts::Tree::Node lastItemWithHighestVisits = root.childNodes.back();
                 std::string action = lastItemWithHighestVisits.getPreviousAction();
                 Mcts::Utils::OmpHelpers::Message("Saving most valuable action in shared vector..");
-                allActionsChosen.push_back(action);
+
+                #pragma omp critical
+                {
+                    allActionsChosen.push_back(action);
+                }
+
                 Mcts::Utils::OmpHelpers::Message("Pragma Omp Parallel section ended..");
             }
 
