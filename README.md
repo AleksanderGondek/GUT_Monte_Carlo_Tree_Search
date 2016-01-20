@@ -16,6 +16,7 @@ Due to mentions advantages over alfa-beta search, MCTS is getting widely adopted
 As a simple game that is perfectly fit for MCTS to play I have chosen classic chess. Therefore this implementation of MCTS is dealing strictly with solving certain situations on chessboard. This may be changed with minimal efford - because class representing game states is implemented as "interface". You may inherit from it and implement any game. However the part of the code responsible for loading up starting state and displaying game are not ready for it and will have to be adjusted.
 
 > Important note!
+> 
 > The code responsible for returning possible chess moves is not 100% ready.
 > It will return onyl moves for king and pawns. Implementing rest is trivial but time-consuming and may be done in futre.
 
@@ -27,6 +28,7 @@ Monte Carlo Tree Search is algorithm based on semi-randomized exploration on giv
 Each run of the algorithm that is used to expand the game tree is called “playout”. In each playout the algorithm is playing the game to the end (or timeout) and then it uses the game playout outcome to weight the tree nodes so that in future better nodes (moves) ale more likely to be selected.
 
 We can differentiate four different rounds of MCTS playout:
+
 1. **Selection step** - the algorithm is selecting successive nodes, starting from the tree root. It basically takes the best known moves from the start of the game tree, to its leaf. How this selection is performed depends on chosen strategy – the main difficulty lies in balancing both three exploration and xploitation of previously added values.
 The most popular and first formula for achieving such balance is called “Upper Confidence Bound  applied to tree” (UTC) and was used in my mplementation.
 2. **Expansion step** - if the chosen tree leaf (move) ends the game, the playout jumps to backpropagation step. Otherwise it chooses one or more available moves and adds them as childes of the node.

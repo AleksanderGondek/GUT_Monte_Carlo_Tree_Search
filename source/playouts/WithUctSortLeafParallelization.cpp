@@ -19,23 +19,23 @@ namespace Mcts
                 Mcts::Tree::Node* node = &root;
                 Mcts::GameStates::IGameState* state = rootState->clone();
 
-                std::cout << "I have that many children: " << std::to_string(node->childNodes.size()) << std::endl;
+                //std::cout << "I have that many children: " << std::to_string(node->childNodes.size()) << std::endl;
 
                 // Selection Step
                 while(node->actionsNotTaken.empty() && !node->childNodes.empty())
                 {
-                    for(int kek = 0 ; kek <node->childNodes.size(); kek++)
-                    {
-                        std::cout << "Child of index: " << kek << std::endl;
-                        std::cout << node->childNodes[kek]._visits << std::endl;
-                        std::cout << node->childNodes[kek]._wins << std::endl;
-                    }
+//                    for(int kek = 0 ; kek <node->childNodes.size(); kek++)
+//                    {
+//                        std::cout << "Child of index: " << kek << std::endl;
+//                        std::cout << node->childNodes[kek]._visits << std::endl;
+//                        std::cout << node->childNodes[kek]._wins << std::endl;
+//                    }
 
-                    std::cout << "test" << std::endl;
+                    //std::cout << "test" << std::endl;
                     node = node->selectNextChildNode();
-                    std::cout << "test2" << std::endl;
+                    //std::cout << "test2" << std::endl;
                     state->performAction(node->getPreviousAction());
-                    std::cout << "test3" << std::endl;
+                    //std::cout << "test3" << std::endl;
                 }
 
                 // Copy all possible actions to vector (not array cause it's not-stadard and
@@ -118,7 +118,7 @@ namespace Mcts
                 }
 
                 i++;
-                std::cout << "End of iteration" << std::endl;
+//                std::cout << "End of iteration" << std::endl;
             }
 
             std::sort(root.childNodes.begin(), root.childNodes.end(),
